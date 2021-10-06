@@ -10,6 +10,53 @@ public class Main {
         ArrayList<movie> movies = new ArrayList<>();
         ArrayList<movie_rating> movies_rating = new ArrayList<>();
         read_files(movies, movies_rating);
+        menu(movies, movies_rating);
+
+    }
+
+    static void menu(ArrayList<movie> movies, ArrayList<movie_rating> movies_rating) {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("welcome to imdb\nplease enter a number:\n1.signup\n2.login\n3.top 10 movies");
+        switch (sc.nextInt()) {
+            case 1:
+                signup();
+                break;
+            case 2:
+                login();
+                break;
+            case 3:
+                top_10_movies(movies, movies_rating);
+                break;
+        }
+    }
+
+    static void signup() {
+    }
+
+    static void login() {
+    }
+
+    static void top_10_movies(ArrayList<movie> movies, ArrayList<movie_rating> movies_rating) {
+        ArrayList<movie_rating> j = movies_rating;
+        System.out.println("------------------------------");
+        for (int i = 0; i < 10; i++) {
+            for (movie a : movies) {
+                if (a.titleId.equals(Collections.max(j).tconst)) {
+                    System.out.println("number "+(i+1));
+                    System.out.println("title: " + a.title + "\nregion: " + a.region + "\nlanguage: " + a.language + "\ntypes: " + a.types[0] + "\nattributes: " + a.attributes[0] + "\nisOriginalTitle: " + a.isOriginalTitle);
+                    for (movie_rating b : j) {
+                        if (b.tconst.equals(a.titleId)) {
+                            System.out.println("averageRating: " + b.averageRating + "\nvotes: " + b.numVotes);
+                            j.remove(b);
+                            break;
+                        }
+                    }
+                    System.out.println("------------------------------");
+                    break;
+                }
+
+            }
+        }
     }
 
     static void read_files(ArrayList<movie> movies, ArrayList<movie_rating> movies_rating) throws IOException {
@@ -62,7 +109,7 @@ class movie {
     }
 }
 
-class movie_rating {
+class movie_rating implements Comparable {
     String tconst;
     double averageRating;
     int numVotes;
@@ -72,4 +119,14 @@ class movie_rating {
         this.averageRating = averageRating;
         this.numVotes = numVotes;
     }
+
+    @Override
+    public int compareTo(Object o) {
+
+        if (averageRating > ((movie_rating) o).averageRating)
+            return 1;
+        else
+            return 0;
+    }
 }
+
